@@ -1,27 +1,64 @@
-//import { useState } from 'react';
+import { useState } from 'react';
 import '../index.css'
+import ApiRoutes from '../utils/ApiRoutes.jsx'
+import AxiosService from '../utils/AxiosService.jsx';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import image from '../assets/images/dummypic1.png';
 
 const UserProfile = () => {
-  // const [formData, setFormData] = useState({
-  //   name: 'John Doe',
-  //   email: 'user@example.com',
-  //   currentPassword: '',
-  //   newPassword: '',
-  //   confirmPassword: '',
-  // });
+  const [formData, setFormData] = useState({
+      currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log('Form submitted:', formData);
-  // };
+  const loginemail = sessionStorage.getItem('loginemail');
+  const userId = sessionStorage.getItem('loginuserId');
+  let navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();  
+    if (formData.newPassword !== formData.confirmPassword) {
+      alert('New Password does not match with Confirm Password');
+      return;
+    }  
+    try {
+      const formDataWithUser = {
+        ...formData, 
+        userId: userId,
+        loginemail:loginemail
+      };
+      let { message } = await AxiosService.post(ApiRoutes.UpdateProfile.path, formDataWithUser, {authenticate: ApiRoutes.UpdateProfile.auth});
+      toast.success(message);
+
+      // Delay navigation by a short timeout to ensure toast is shown
+      setTimeout(() => {
+        navigate('/Profile');
+      }, 10000); // 1 second delay
+
+      setFormData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+    } else {
+        alert(error.message || 'Internal Server Error');
+    }
+    }
+  };
+  
 
   return (
     <section className="section main-section">
@@ -111,8 +148,8 @@ const UserProfile = () => {
           <div className="card-content">
             <div className="image w-48 h-48 mx-auto">
               <img
-                src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
-                alt="John Doe"
+                src={image}
+                alt={loginemail}
                 className="rounded-full"
               />
             </div>
@@ -128,7 +165,7 @@ const UserProfile = () => {
               <label className="label">E-mail</label>
               <div className="control">
                 {/* <input type="text" readOnly value={formData.email} className="input is-static" /> */}
-                <input type="text" readOnly value={""} className="input is-static" />
+                <input type="text" readOnly value={loginemail} className="input is-static" />
               </div>
             </div>
           </div>
@@ -136,7 +173,7 @@ const UserProfile = () => {
       </div>
 
       {/* Change Password */}
-      {/* <div className="card">
+      <div className="card">
         <header className="card-header">
           <p className="card-header-title">
             <span className="icon">
@@ -200,7 +237,7 @@ const UserProfile = () => {
             </div>
           </form>
         </div>
-      </div> */}
+      </div>
     </section>
   );
 };

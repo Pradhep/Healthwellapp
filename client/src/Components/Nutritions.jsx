@@ -36,7 +36,17 @@ const Nutritions = () => {
     try{
       let {message} = await AxiosService.post(ApiRoutes.CREATE_NTS.path,{formDataWithUser},{authenticate:ApiRoutes.CREATE_NTS.auth})
       toast.success(message)
-      navigate('/Nutritions')
+       // Delay navigation by a short timeout to ensure toast is shown
+       setTimeout(() => {
+        navigate('/Nutritions');
+      }, 1000); // 1 second delay
+
+      setFormData({
+        name: '',
+        calories: '',
+        micro: '',
+        macro: ''
+      });
     }
     catch(error){
       toast.error(error.message || "Internal Server Error")
@@ -110,7 +120,7 @@ const Nutritions = () => {
               <hr />
               <div className="field"> 
                 <div className="control">
-                  <button type="submit" className="button green">
+                  <button type="button" className="button green" onClick={handleSubmit}>
                     Submit
                   </button>
                 </div>

@@ -7,6 +7,7 @@ import Sidebar from '../Components/Sidebar.jsx'
 import Navbar from '../Components/Navbar.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
 import About from '../Components/About.jsx'
+import HealthGoals from '../Components/HealthGoals.jsx'
 //import AdminGuard from './AdminGuard.jsx'
 import '../Scripts/main.js'
 import '../Scripts/chart.sample.js'
@@ -31,6 +32,10 @@ export default [
     {
         path:'/Nutritions',
         element:<ProtectedRoute><Sidebar/><Navbar/><Nutritions/></ProtectedRoute>
+    },
+    {
+        path:'/HealthGoals',
+        element:<ProtectedRoute><Sidebar/><Navbar/><HealthGoals/></ProtectedRoute>
     },
     {
         path:'/Profile',

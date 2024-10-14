@@ -11,6 +11,10 @@ export default {
         path:'/user/signup',
         auth:false
     },
+    UpdateProfile:{
+        path:'/user/updateprofile',
+        auth:false
+    },
     CREATE_EXS:{
         
         path:'/Exercises/createExslog',

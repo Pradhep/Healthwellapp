@@ -32,11 +32,21 @@ const Exercises = () => {
 
   const handleSubmit = async()=>{
     try{
-      console.log("calling func",formData)
       //let {message} = await AxiosService.post(ApiRoutes.CREATE_EXS.path,{formData})
       let {message} = await AxiosService.post(ApiRoutes.CREATE_EXS.path,{formDataWithUser},{authenticate:ApiRoutes.CREATE_EXS.auth})
       toast.success(message)
-      navigate('/Exercises')
+
+      // Delay navigation by a short timeout to ensure toast is shown
+      setTimeout(() => {
+        navigate('/Exercises');
+      }, 1000); // 1 second delay
+
+      setFormData({
+        name: '',
+        duration: '',
+        distance: '',
+        calburned: ''
+      });
     }
     catch(error){
       toast.error(error.message || "Internal Server Error")
@@ -111,7 +121,7 @@ const Exercises = () => {
               <hr />
               <div className="field"> 
                 <div className="control">
-                  <button type="submit" className="button green">
+                  <button type="button" className="button green" onClick={handleSubmit}>
                     Submit
                   </button>
                 </div>

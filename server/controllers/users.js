@@ -16,6 +16,40 @@ const getAllUsers = async (req,res)=>{
         })
    }
 }
+const UpdateProfile = async (req, res) => {
+    try {
+        let user = await userModel.findOne({ email: req.body.loginemail });
+        if (!user) {
+            return res.status(400).send({
+                message: `User with email ${req.body.email} does not exist`
+            });
+        }
+        if (user.email === req.body.loginemail) {
+            const isPasswordMatch = await auth.hashCompare(req.body.currentPassword, user.password);
+            if (isPasswordMatch) {
+                user.password = await auth.hashPassword(req.body.confirmPassword);
+                await user.save();
+                res.status(200).send({
+                    message: "Password updated successfully"
+                });
+            } else {
+                return res.status(400).send({
+                    message: "Current password is incorrect"
+                });
+            }
+        } else {
+            return res.status(400).send({
+                message: `User email ${req.body.email} does not match the login email`
+            });
+        }
+    } 
+    catch (error) {
+        res.status(500).send({
+            message: error.message || "Internal Server Error",
+            error
+        });
+    }
+};
 
 const signup = async(req,res)=>{
     try {
@@ -98,5 +132,6 @@ const login = async(req,res)=>{
 export default {
     login,
     signup,
-    getAllUsers
+    getAllUsers,
+    UpdateProfile
 }

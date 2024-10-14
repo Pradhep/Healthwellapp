@@ -12,11 +12,11 @@ const createfoodlog = async(req,res)=>{
         req.body.foodmacront= req.body.formDataWithUser.macro;
 
         await foodmodel.create(req.body)
-        res.status(201).send({
-            message:'Food intake Log created '
+        return res.status(201).send({
+            message:'Nutrition Log created '
         })
     } catch (error) {
-        res.status(500).send({
+        return res.status(500).send({
             message:error.message || "Internal Server Error",
             error
         })
@@ -26,12 +26,12 @@ const createfoodlog = async(req,res)=>{
 const getAllFood = async (req,res)=>{
     try {
      let allfooddata = await foodmodel.find({userId:req.body.formDataWithUser.userId},{foodid:1, userId:1, foodtitle:1, foodcal:1,foodmicrnt:1,foodmacrnt:1, _id:0})
-     res.status(200).send({
+     return res.status(200).send({
          message:"All Food Data Fetch Successfull",
          data:allfooddata
      })
     } catch (error) {
-         res.status(500).send({
+        return res.status(500).send({
              message:error.message || "Internal Server Error",
              error
          })
@@ -41,12 +41,12 @@ const getAllFood = async (req,res)=>{
  const getFood = async (req,res)=>{
     try {
      let fooddata = await foodmodel.find({foodid:req.body.foodid},{foodid:1, userId:1, foodtitle:1, foodcal:1,foodmicrnt:1,foodmacrnt:1, _id:0})
-     res.status(200).send({
+     return res.status(200).send({
          message:"Food Data Updated Successfully",
          data:fooddata
      })
     } catch (error) {
-         res.status(500).send({
+        return res.status(500).send({
              message:error.message || "Internal Server Error",
              error
          })

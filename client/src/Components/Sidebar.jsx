@@ -24,14 +24,14 @@ function Sidebar() {
             </Link>
           </li>
         </ul>
-        {/* <ul className="menu-list">
+        <ul className="menu-list">
           <li className="active">
             <Link to='/Profile' >
               <span className="icon"><i className="mdi mdi-account"></i></span>
               <span className="menu-item-label">Profile</span>
             </Link>
           </li>
-        </ul> */}
+        </ul>
         <p className="menu-label">Menu</p>
         <ul className="menu-list">
           <li className="--set-active-tables-html">
@@ -44,6 +44,12 @@ function Sidebar() {
             <Link to='/Nutritions'>
               <span className="icon"><i className="mdi mdi-square-edit-outline"></i></span>
               <span className="menu-item-label">Nutritions</span>
+            </Link>
+          </li>
+          <li className="--set-active-forms-html">
+            <Link to='/HealthGoals'>
+              <span className="icon"><i className="mdi mdi-square-edit-outline"></i></span>
+              <span className="menu-item-label">HealthGoals</span>
             </Link>
           </li>
           {/* <li>
